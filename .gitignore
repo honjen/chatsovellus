@@ -1,0 +1,7 @@
+.env
+__pycache__
+venv
+templates2
+app1.py
+app2.py
+static

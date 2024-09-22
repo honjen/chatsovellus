@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>chatsovellus</title>
+</head>
+<body>
+    <h1>{{ category.name }}</h1>
+    <hr>
+    <a href="/">etusivulle</a>
+    <hr>
+    <p>viestiketjuja: {{ count_threads }}</p>
+    <ul>
+        {% for thread in threads %}
+        <li>
+            <p><a href="/{{ category.name }}/{{ thread.thread_id }}">{{ thread.name }}</a></p>
+        </li>
+        {% endfor %}
+    </ul>
+    <hr>
+    {% if session.user_id %}
+    olet kirjautunut sisään.
+    <a href="/logout">kirjaudu ulos</a>
+    {% else %}
+    <a href="/login">kirjaudu sisään</a>
+    {% endif %}
+</body>
+</html>
