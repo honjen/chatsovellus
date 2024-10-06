@@ -1,20 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>chatsovellus</title>
-</head>
-<body>
-    <hr>
-    <a href="/">etusivulle</a>
-    <hr>
-    <form action="/login" method="post">
-        tunnus: <input type="text" name="username">
-        <p>
-        salasana: <input type="password" name="password">
-        <p>
-        <input type="submit" value="kirjaudu">
-    </form>
-    voit halutessasi luoda tunnuksen <a href="/register">tästä</a>
-</body>
-</html>
+{% extends "layout.html" %}
+{% block title %}kirjautuminen{% endblock %}
+{% block content %}
+    <div class="content login-page">
+        <h1 class="page-title">kirjaudu sisään</h1>
+        <div class="login-container">
+            <form action="/login" method="post">
+                <label for="username">tunnus:</label>
+                <input type="text" name="username" name="username" required>
+                <label for="password">salasana:</label>
+                <input type="password" name="password" name="password" required>
+                <input type="submit" value="kirjaudu">
+            </form>
+        </div>
+        <p>jos sinulla ei ole tunnusta, <a href="/register">luo käyttäjätunnus</a></p>
+    </div>
+{% endblock %}

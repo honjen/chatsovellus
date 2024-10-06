@@ -1,27 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>chatsovellus</title>
-</head>
-<body>
-    <h1>keskustelualueet</h1>
-    <hr>
-        keskustelualueita: {{ count_categories }} viestejä: {{ count_messages }}
-    <hr>    
+{% extends "layout.html" %}
+{% block title %}chatsovellus{% endblock %}
+{% block content %}
+    <div class="content">
+        <h1>tervetuloa chatsovellukseen</h1>
+        <hr>
+        <p>keskustelualueita: {{ count_categories }}</p>
         <ul>
             {% for category in categories %}
-            <li>
-                <p><a href="/{{ category.name }}">{{ category.name }}</a></p>
-            </li>
+                <li>
+                    <a href="/{{ category.category_name }}">{{ category.category_name }}</a>
+                    {% if admin %}
+                    <form action="/delete_category" method="POST">
+                        <input type="hidden" name="category_id" value="{{ category.category_id }}">
+                        <input type="submit" value="poista keskustelualue"/>
+                    </form>
+                    {% endif %}
+                    <p>viestiketjujen määrä: {{ category.thread_count }}</p>
+                    <p>viestien määrä: {{ category.message_count }}</p>
+                    <p>viimeisin viesti: {{ category.last_message_time }}</p>
+                </li>
             {% endfor %}
         </ul>
-    <hr>
-    {% if session.user_id %}
-    olet kirjautunut sisään.
-    <a href="/logout">kirjaudu ulos</a>
-    {% else %}
-    <a href="/login">kirjaudu sisään</a>
-    {% endif %}
-</body>
-</html>
+        {% if admin %}
+            <p>luo uusi keskusteluketju:</p>
+            <form action="/new_category" method="POST">
+                <input type="text" name="category_name"> 
+                <input type="radio" name="is_secret" value="0"checked> julkinen
+                <input type="radio" name="is_secret" value="1"> salainen
+                <br>
+                <input type="submit" value="luo uusi keskustelualue">
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}
+

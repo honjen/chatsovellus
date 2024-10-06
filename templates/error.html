@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>chatsovellus</title>
-</head>
-<body>   
-    <hr>
-        <a href="/">etusivulle</a>
-    <hr>
-    virhe: {{ message }}
-</body>
-</html>
+{% extends "layout.html" %}
+{% block title %}virhe{% endblock %}
+{% block content %}
+    <div class="content">
+        virhe: {{ message }}
+    </div>
+{% endblock %}

@@ -1,21 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>chatsovellus</title>
-</head>
-<body>
-    <hr>
-    <a href="/">etusivulle</a>
-    <hr>
-    <form action="/register" method="post">
-        tunnus: <input type="text" name="username">
-        <p>
-        salasana: <input type="password" name="password1">
-        <p>
-        salasana uudestaan: <input type="password" name="password2">
-        <p>
-        <input type="submit" value="luo tunnus">
-    </form>
-</body>
-</html>
+{% extends "layout.html" %}
+{% block title %}luo käyttäjätunnus{% endblock %}
+{% block content %}
+    <div class="content login-page">
+        <h1 class="page-title">luo käyttäjätunnus</h1>
+        <div class="register-container">
+            <form action="/register" method="post">
+                <input type="hidden" name="redirect_url" value="{{ redirect_url }}">
+                <label for="username">tunnus:</label>
+                <input type="text" name="username" name="username" required>
+                <label for="password1">salasana:</label>
+                <input type="password" name="password1" name="password1" required>
+                <label for="password2">salasana uudestaan:</label>
+                <input type="password" name="password2" name="password2" required>
+                <input type="submit" value="luo tunnus">
+            </form>
+        </div>
+        <p>jos sinulla on tunnus, <a href="/login">kirjaudu sisään</a></p>
+    </div>
+{% endblock %}

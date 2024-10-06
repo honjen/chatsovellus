@@ -1,28 +1,71 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>chatsovellus</title>
-</head>
-<body>
-    <h1>{{ category.name }}</h1>
-    <hr>
-    <a href="/">etusivulle</a>
-    <hr>
-    <p>viestiketjuja: {{ count_threads }}</p>
-    <ul>
-        {% for thread in threads %}
-        <li>
-            <p><a href="/{{ category.name }}/{{ thread.thread_id }}">{{ thread.name }}</a></p>
-        </li>
-        {% endfor %}
-    </ul>
-    <hr>
-    {% if session.user_id %}
-    olet kirjautunut sisään.
-    <a href="/logout">kirjaudu ulos</a>
-    {% else %}
-    <a href="/login">kirjaudu sisään</a>
-    {% endif %}
-</body>
-</html>
+{% extends "layout.html" %}
+{% block title %}{{ category.name }}{% endblock %}
+{% block content %}
+    <div class="content">
+        <h1>{{ category.name }}</h1>
+        <hr>
+        <p>viestiketjuja: {{ count_threads }}</p>
+        <ul>
+            {% for thread in threads %}
+            <li>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <a href="/{{ category.name }}/{{ thread.thread_id }}">{{ thread.thread_name }}</a>
+                    </div>
+                    <div>
+                        viestien määrä: {{ thread.message_count }} |
+                        viimeisin viesti: {{ thread.last_message_time }}
+                    </div>
+                </div>
+                {% if session.user_id == thread.user_id %}
+                    <label>
+                        <input type="checkbox" class="edit-toggle"> editoi
+                    </label>
+                    <div class="edit-actions" style="display: none; margin-top: 10px;">
+                        <form action="/{{ category.name }}/delete_thread" method="POST" class="delete-form" style="display: inline;">
+                            <input type="hidden" name="thread_id" value="{{ thread.thread_id }}">
+                            <input type="submit" value="poista keskusteluketju" class="delete-thread-btn"/>
+                        </form>
+                        <form action="/{{ category.name }}/edit_thread" method="POST" class="edit-form" style="display: inline;">
+                            <input type="hidden" name="thread_id" value="{{ thread.thread_id }}">
+                            <input type="hidden" name="category_name" value="{{ category.name }}">
+                            <input type="text" name="thread_name" placeholder="muokkaa otsikkoa">
+                            <input type="submit" value="lähetä">
+                        </form>
+                    </div>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        <hr>
+        {% if session.user_id %}
+            luo uusi keskusteluketju:
+            <br>
+            <form action="/{{ category.name }}/new_thread" method="POST">
+                <input type="hidden" name="category_id" value="{{ category.category_id }}">
+                <input type="hidden" name="category_name" value="{{ category.name }}">
+                otsikko: <input type="text" name="thread_name">
+                <br>
+                viesti:
+                <br>
+                <textarea name="content" rows="3" cols="40"></textarea>
+                <br>
+                <input type="submit" value="lähetä">
+            </form>
+            <hr>
+        {% endif %}
+    </div>
+    <script>
+        document.querySelectorAll('.edit-toggle').forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                var editActions = this.closest('li').querySelector('.edit-actions');
+                if (this.checked) {
+                    editActions.style.display = 'block';
+                } else {
+                    editActions.style.display = 'none';
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
