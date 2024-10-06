@@ -4,7 +4,7 @@ from flask import session
 from werkzeug.security import check_password_hash, generate_password_hash
 
 def login(username, password):
-    sql = "SELECT user_id, password FROM users WHERE username=:username"
+    sql = "SELECT u.user_id, u.password, r.is_admin FROM users u LEFT JOIN rights r ON u.user_id = r.user_id WHERE u.username = :username"
     result = db.session.execute(text(sql), {"username":username})
     user = result.fetchone()
     if not user:
@@ -12,6 +12,7 @@ def login(username, password):
     else:
         if check_password_hash(user.password, password):
             session["user_id"] = user.user_id
+            session["is_admin"] = user.is_admin
             return True
         else:
             return False
@@ -31,3 +32,15 @@ def register(username, password):
 
 def user_id():
     return session.get("user_id",0)
+
+def check_rights(category_id):
+    sql = "SELECT CASE WHEN r.is_admin THEN TRUE WHEN c.is_secret AND :category_id = ANY(r.secret_areas) THEN TRUE WHEN c.is_secret IS FALSE THEN TRUE ELSE FALSE END AS has_access FROM rights r JOIN categories c ON c.category_id = :category_id WHERE r.user_id = :user_id OR :user_id = 0"
+    result = db.session.execute(text(sql), {'user_id': user_id(), 'category_id': category_id})
+    return result.fetchone()[0]
+
+def check_admin():
+    if user_id == 0 or not user_id():
+        return False
+    sql = "SELECT CASE WHEN r.is_admin THEN TRUE  ELSE FALSE END AS is_admin FROM rights r WHERE r.user_id = :user_id OR :user_id = 0"
+    result = db.session.execute(text(sql), {'user_id': user_id()})
+    return result.fetchone()[0]
