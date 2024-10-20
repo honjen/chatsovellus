@@ -2,12 +2,12 @@ INSERT INTO categories (name) VALUES ('kissat');
 INSERT INTO categories (name) VALUES ('koirat');
 INSERT INTO categories (name) VALUES ('kissat vs koirat');
 
-INSERT INTO threads (user_id, category_id, name) VALUES (1, 1, 'Mikä on lempi kissarotusi?');
-INSERT INTO threads (user_id, category_id, name) VALUES (1, 1, 'Parhaat kissavideot');
-INSERT INTO threads (user_id, category_id, name) VALUES (1, 2, 'Söpöimmät koirat');
-INSERT INTO threads (user_id, category_id, name) VALUES (1, 2, 'Kerro koirastasi');
-INSERT INTO threads (user_id, category_id, name) VALUES (1, 3, 'Kummat on parempii: kissat vai koirat');
-INSERT INTO threads (user_id, category_id, name) VALUES (1, 3, 'Koirat on kivempii ku kissat');
+INSERT INTO threads (user_id, category_id, name, content) VALUES (1, 1, 'Mikä on lempi kissarotusi?', 'En muista nimeä, mutta ne karvattomat kissat on tosi söpöjä. Kertokaa mistä te tykkäätte.');
+INSERT INTO threads (user_id, category_id, name, content) VALUES (1, 1, 'Parhaat kissavideot', 'Tiedätte jo varmaan angrycat:in. Antakaa videovinkkejä :)');
+INSERT INTO threads (user_id, category_id, name, content) VALUES (1, 2, 'Söpöimmät koirat', 'Huskyt on ihania <3 Mitkä muut koirarodut on hyviä?');
+INSERT INTO threads (user_id, category_id, name, content) VALUES (1, 2, 'Kerro koirastasi', 'Mun koira aina kerjää juustoa jos huomaa, että käyn jääkaapilla. Minkälaisia teidän koirat on?');
+INSERT INTO threads (user_id, category_id, name, content) VALUES (1, 3, 'Kummat on parempii: kissat vai koirat', 'Mun mielestä molemmat on ihania, mut mitä mieltä te ootte?');
+INSERT INTO threads (user_id, category_id, name, content) VALUES (1, 3, 'Koirat on kivempii ku kissat', 'Sehän on vain ihan ilmiselvää et koirat on parempii lemmikkejä :D');
 
 INSERT INTO messages (thread_id, user_id, category_id, content) VALUES (1, 1, 1, 'En mä tiedä. Ne on kaikki niin söpöjä.');
 INSERT INTO messages (thread_id, user_id, category_id, content) VALUES (1, 1, 1, 'Totta :D.');
