@@ -2,84 +2,101 @@
 Sovelluksessa näkyy keskustelualueita, joista jokaisella on tietty aihe. Alueilla on keskusteluketjuja, jotka muodostuvat viesteistä. Jokainen käyttäjä on peruskäyttäjä tai ylläpitäjä.
 
 
-**Sovelluksen ominaisuudet**
+## Sovelluksen ominaisuudet
 
 - Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
 - Käyttäjä näkee sovelluksen etusivulla listan alueista sekä jokaisen alueen ketjujen ja viestien määrän ja viimeksi lähetetyn viestin ajankohdan.
 - Käyttäjä voi luoda alueelle uuden ketjun antamalla ketjun otsikon ja aloitusviestin sisällön.
 - Käyttäjä voi kirjoittaa uuden viestin olemassa olevaan ketjuun.
-- Käyttäjä voi muokata luomansa ketjun otsikkoa sekä lähettämänsä viestin sisältöä. Silloin viestiin tulee merkintä "edit", jotta muut käyttäjät tietävät, että jotain on muokattu jälkikäteen.
+- Käyttäjä voi muokata luomansa ketjun otsikkoa sekä lähettämänsä viestin sisältöä. Silloin viestiin tulee merkintä "muokattu", jotta muut käyttäjät tietävät, että jotain on muokattu jälkikäteen.
 - Käyttäjä voi poistaa oman ketjun tai viestin.
 - Käyttäjä voi etsiä kaikki viestit, joiden osana on annettu sana.
 - Ylläpitäjä voi lisätä ja poistaa keskustelualueita.
 - Ylläpitäjä voi luoda salaisen alueen ja määrittää, keillä käyttäjillä on pääsy alueelle
 
-**Sovelluksen nykyinen tilanne**
+## Ohjeet käyttöä varten  
 
-Tähän palautukseen keskityin saamaan valmiiksi seuraavat toiminnot:
-- Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
-- Käyttäjä näkee sovelluksen etusivulla listan alueista sekä jokaisen alueen ketjujen ja viestien määrän ja viimeksi lähetetyn viestin ajankohdan.
-- Käyttäjä voi luoda alueelle uuden ketjun antamalla ketjun otsikon ja aloitusviestin sisällön.
-- Käyttäjä voi kirjoittaa uuden viestin olemassa olevaan ketjuun.
-- Käyttäjä voi muokata luomansa ketjun otsikkoa sekä lähettämänsä viestin sisältöä. (puuttuu: Silloin viestiin tulee merkintä "edit", jotta muut käyttäjät tietävät, että jotain on muokattu jälkikäteen.)
-- Käyttäjä voi poistaa oman ketjun tai viestin.
-- Ylläpitäjä voi lisätä ja poistaa keskustelualueita.
-- Ylläpitäjä voi luoda salaisen alueen (puuttuu: ja määrittää, keillä käyttäjillä on pääsy alueelle)
+~~~
+HUOM! TÄRKEÄÄ!
+Sovelluksessa on tunnettu bugi, että jos on kirjautunut sisään kun poistaa tai tyhjentää tietokannan niin sovellus menee rikki. Joten jos haluat poistaa tai tyhjentää tietokannan käytön aikana, muista kirjautua ulos ensin!
+~~~
+<br>
 
-Sovelluksesta puuttuvat vielä seuraavat toiminnot:
-- Käyttäjä voi etsiä kaikki viestit, joiden osana on annettu sana.
+ 1\. Sovellus ei ole testattavissa Fly.iossa. Siis kloonaa tämä repositorio omalle koneellesi komennolla:
 
-TLDR:
-Tässä vaiheessa on valmiina sovelluksen pohjarakenne, iso osa toiminnoista sekä ulkonäköä on hiottua ihan vähän. Aion myöhemmin lisätä puuttuvan toiminnon, parantaa sovelluksen tietoturvaa, sen käytettävyyttä sekä ulkonäköä.
+```
+git clone git@github.com:honjen/chatsovellus.git
+```  
+<br>
 
+2\. Siirry repositorion juurikansioon ja luo sinne .env-tiedosto, jonka sisällön määrität seuraavanlaiseksi:
+```
+DATABASE_URL=<tietokannan-paikallinen-osoite>
+SECRET_KEY=<salainen-avain>
+```
+<br>
 
-**Käynnistysohjeet**
-
-**HUOM!! TÄRKEÄÄ!!** 
-
-**1. Sovelluksessa on tunnettu bugi, että jos on kirjautunut sisään kun poistaa tai tyhjentää tietokannan niin sovellus menee rikki. Joten jos haluat poistaa tai tyhjentää tietokannan käytön aikana, muista kirjautua ulos ensin!**
-
-**2. schema1.sql poistaa taulut nimeltä messages, threads, categories, rights ja users ennen kuin tekee taulut uudelleen. Jos sinulla on samannimisiä tauluja ja et halua että niille tapahtuu mitään niin tee tällä sivulla olevan ohjeen mukaan: https://hy-tsoha.github.io/materiaali/vertaisarviointi/**
-
-**3.Komento "psql < schema2.sql" luo tietokannan keskustelualueisiin joitain viestiketjuja ja viestejä, jos haluat tietokantaan valmista täytettä. Koodissa oletetaan, että sovelluksessa on ainakin yksi käyttäjä ennen kuin schema2.sql ajetaan, jotta se toimisi. Jos unohdat tehdä käyttäjän sovellukseen ennen schema2.sql ajoa niin aloita uudestaan kohdasta 3.**
-
-**HUOM!! TÄRKEÄÄ!!**
-
-1. Kloonaa tämä repositorio omalle koneellesi ja siirry sen juurikansioon. Luo kansioon .env-tiedosto ja määritä sen sisältö seuraavanlaiseksi:
-DATABASE_URL="tietokannan-paikallinen-osoite"
-SECRET_KEY="salainen-avain"
-
-
-2. Seuraavaksi aktivoi virtuaaliympäristö ja asenna sovelluksen riippuvuudet komennoilla:
-
+3\. Seuraavaksi aktivoi virtuaaliympäristö ja asenna sovelluksen riippuvuudet komennoilla:
+```
 $ python3 -m venv venv
-
 $ source venv/bin/activate
-
 $ pip install -r ./requirements.txt
+```
+<br>
 
+4\. Seuraavan kohdan tietokannan määritys schema1.sql:llä poistaa taulut nimeltä messages, threads, categories, rights ja users ennen kuin tekee taulut uudelleen. Jos sinulla on jo samannimisiä tietokantatauluja ja et halua että niille tapahtuu mitään niin voit luoda Postgresiin oman tietokannan seuraavasti:
+<br>
 
-3. Määritä tietokannan skeema komennolla:
+avaa uusi terminaali ja anna komento, joka käynnistää PostgreSQL-palvelimen:
+```
+start-pg.sh
+```
 
+Mene takaisin aikasempaan terminaaliin ja anna komennot:
+```
+$ psql
+user=# CREATE DATABASE <tietokannan-nimi>;
+```
+Voit nyt määrittää projektin tietokantaskeeman omasta tietokannastasi erilliseen tietokantaan komennoilla:
+```
+\q
+$ psql -d <tietokannan-nimi> < schema1.sql
+```
+Määritä vielä tietokannan osoite projektille siten, että osoite päättyy luomasi tietokannan nimeen. Esimerkiksi, jos omalla sovelluksellasi osoite on muotoa postgresql:///user ja loit äsken uuden tietokannan nimeltä testi, tulisi uudeksi tietokannan osoitteeksi postgresql:///testi.
+<br><br>
+
+5\. Jos et tehnyt kohtaa 4 niin seuravaaksi määritä tietokannan skeema komennolla:
+```
 $ psql < schema1.sql
+```
+<br>
 
-
-4. käynnistä sovellus komennolla:
-
+6\. Käynnistä sovellus komennolla:
+```
 $ flask run
+```
+<br>
+
+7\. Käytä sovellusta selaimessa osoitteessa http://127.0.0.1:5000/.
+<br>
 
 
-5. käytä sovellusta selaimessa
+8\. Voit luoda käyttäjän ylläpitäjän oikeuksilla antamalla käyttäjän nimeksi "admin".
+<br>
 
-6. voit luoda käyttäjän ylläpitäjän oikeuksilla antamalla käyttäjä nimeksi "admin"
+---
+<br>
 
+**OPTIONAL: lisää tietokantaan sisältöä**
+<br>
 
-OPTIONAL: schema2.sql käyttö
+9\. Jos et ole jo tehnyt niin, mene sovellukseen, paina kirjaudu sisään ja tee sovellukseen käyttäjätunnus.
+<br>
 
-7. mene sovellukseen, paina kirjaudu sisään ja tee sovellukseen käyttäjätunnus
-
-8. lisää tietokantaan sisältöä komennolla:
-
+10\. Lisää tietokantaan sisältöä komennolla:
+```
 $ psql < schema2.sql
+```
+<br>
 
-9. päivitä sovelluksen nettisivu, jonka jälkeen voit lisätä viestiketjuihin viestejä
+11\. Päivitä sovelluksen nettisivu niin voit käyttää sovellusta.
