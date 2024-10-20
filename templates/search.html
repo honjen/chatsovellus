@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% block title %}haku{% endblock %}
+{% block content %}
+<div class="content login-page">
+    <h1>haku</h1>
+    <div class="login-box">
+        <form action="{{ url_for('searchresults') }}" method="get">
+            <input type="text" id="query" name="query" placeholder="mitä haet?" maxlength="50">
+            <h3>sisällytä hakuun</h3>
+            <div class="checkbox-group">
+                <div>
+                    <input type="checkbox" id="include_categories" name="search_options" value="categories" checked>
+                    <label for="include_categories">keskustelualueet</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="include_threads" name="search_options" value="threads" checked>
+                    <label for="include_threads">viestiketjut</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="include_messages" name="search_options" value="messages" checked>
+                    <label for="include_messages">viestit</label>
+                </div>
+            </div>
+            <input type="submit" value="hae" class="submit-button">
+        </form>
+    </div>
+</div>
+{% endblock %}

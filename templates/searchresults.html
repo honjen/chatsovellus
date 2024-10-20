@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+{% block title %}hakutulokset{% endblock %}
+{% block content %}
+<div class="content">
+    <div class="first-message-box">
+        <div class="message-content">
+            <h1>tulokset: "{{ query }}"</h1>
+        </div>    
+    </div>
+    {% if "categories" in options %}
+        <h2>keskustelualueet</h2>
+        {% if categories_result %}
+            <hr>
+            {% for category in categories_result %}
+                <div class="message-box">
+                    <a href="/{{ category.category_name }}"><h2>{{ category.category_name }}</h2></a>
+                    <p>viestiketjuja {{ category.thread_count }}</p>
+                    <p>viestejä: {{ category.message_count }}</p>
+                    {% if category.last_message_time %}
+                    <p>viimeisin viesti: {{  category.last_message_time }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>ei löytynyt keskustelualueita</p>
+        {% endif %}
+    {% endif %}
+    {% if "threads" in options %}
+        <h2>viestiketjut</h2>
+        {% if threads_result %}
+            <hr>
+            {% for thread in threads_result %}
+            <div class="message-box">
+                <a href="/{{ thread.category_name }}#{{ thread.thread_id }}"><h3>{{ thread.thread_name }}</h3></a>
+                <p>keskustelualue: {{ thread.category_name }}</p>
+                <hr>
+                <p>{{ thread.content }}</p>
+                <hr>
+                {% if thread.message_count == 0 %}
+                <p>ei vastauksia</p>
+                {% else %}
+                <p>vastauksia: {{ thread.message_count }} 
+                {% if thread.last_message_time %}
+                | viimeisin viesti: {{ thread.last_message_time }}</p>
+                {% endif %}
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>ei löytynyt viestiketjuja</p>
+        {% endif %}
+    {% endif %}
+    {% if "messages" in options %}
+        <h2>viestit</h2>
+        {% if messages_result %}
+            <hr>
+            {% for message in messages_result %}
+                <div class="message-box">
+                    <a href="/{{ message.category_name }}/{{ message.thread_id }}#{{ message.message_id }}"><strong>linkki viestiin</strong></a>
+                    <p>keskustelualue: {{ message.category_name }} | viestiketju: {{message.thread_name }}</p>
+                    <hr>
+                    <p>
+                        <strong>{{ message.username }}</strong>
+                        <span>lähetetty {{ message.sent_at }}{% if message.edited_at %} | muokattu: {{ message.edited_at }}{% endif %}</span>
+                    </p>
+                    <p class="message-content">{{ message.content }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>ei löytynyt viestejä</p>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
