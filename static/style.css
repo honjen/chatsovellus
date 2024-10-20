@@ -1,9 +1,16 @@
+/* main body*/
+
 body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
     font-family: Arial, sans-serif;
 }
+
+
+
+/* navigation bar */
+
 .navbar {
     background-color: #f9f9f9;
     border-bottom: 1px solid #ccc;
@@ -17,24 +24,31 @@ body {
     height: 60px;
     z-index: 1000;
     display: flex;
-    align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
 }
+
+
 .navbar .left-links,
 .navbar .right-links {
     display: flex;
     align-items: center;
 }
+
+
 .navbar .title {
     font-weight: bold;
     margin-right: 10px;
 }
+
+
 .navbar .separator {
     border-left: 1px solid #ccc;
     height: 20px;
     margin-right: 10px;
 }
+
+
 .navbar a {
     margin-left: 5px;
     text-decoration: none;
@@ -46,25 +60,40 @@ body {
     transition: background-color 0.3s, border-color 0.3s;
     font-size: 16px;
 }
+
+
 .navbar a:hover {
     background-color: #ddd;
     border-color: #bbb;
 }
+
+
+
+/* buffer for content */
+
 .content {
     margin-top: 70px;
 }
-.content.login-page {
+
+
+
+/* login and register pages*/
+
+.login-page {
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    text-align: center;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     align-items: center;
     justify-content: center;
-    padding: 20px 0;
+    height: calc(100vh - 70px);
 }
-body.login-register {
-    background-color: white;
-}
-.login-container,
-.register-container {
+
+
+.login-box {
     background-color: #f0f0f0;
     padding: 20px;
     border-radius: 10px;
@@ -75,21 +104,10 @@ body.login-register {
     text-align: center;
     margin-bottom: 20px;
 }
-.login-container form,
-.register-container form {
-    display: flex;
-    flex-direction: column;
-}
-.login-container label,
-.register-container label {
-    margin-bottom: 5px;
-    font-weight: bold;
-    text-align: left;
-}
-.login-container input[type="text"],
-.login-container input[type="password"],
-.register-container input[type="text"],
-.register-container input[type="password"] {
+
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
     margin-bottom: 10px;
     padding: 10px;
     border: 1px solid #ccc;
@@ -97,8 +115,9 @@ body.login-register {
     width: 100%;
     box-sizing: border-box;
 }
-.login-container input[type="submit"],
-.register-container input[type="submit"] {
+
+
+.login-box input[type="submit"] {
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -107,36 +126,82 @@ body.login-register {
     cursor: pointer;
     transition: background-color 0.3s;
 }
-.login-container input[type="submit"]:hover,
-.register-container input[type="submit"]:hover {
+
+
+.login-box input[type="submit"]:hover {
     background-color: #333;
 }
+
+
+.login-box .checkbox-group {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+
+.login-box input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+
+.login-box .radio-group {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+
+
+.login-box input[type="radio"] {
+    margin-right: 5px;
+}
+
+
+
+/* threads: sent messages box */
+
+.first-message-box {
+    background-color: transparent;
+    border: none;
+    padding: 10px 30px;
+    margin: 15px 0;
+}
+
+
 .message-box {
     border: 1px solid #ccc;
     padding: 10px 30px;
     margin: 15px 0;
     background-color: #f9f9f9;
     border-radius: 5px;
-    word-wrap: break-word;
     width: 100%;
     max-width: 1200px;
     box-sizing: border-box;
+    overflow-y: auto;
 }
-.message-box strong {
+
+
+.message-box strong, .first-message-box strong {
     font-weight: bold;
     margin-right: 10px;
 }
+
+
 .message-content {
     white-space: pre-wrap;
     word-wrap: break-word;
 }
-.messages-container {
-    overflow-y: auto;
-    padding-bottom: 125px;
-    width: 100%;
-    margin-bottom: 0;
-    box-sizing: border-box;
+
+
+.message-buffer {
+    padding-bottom: 135px;
 }
+
+
+
+/* threads: message input box and login prompt*/
+
 .fixed-input-box {
     position: fixed;
     bottom: 0;
@@ -150,16 +215,20 @@ body.login-register {
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     box-sizing: border-box;
-    height: 125px;
+    height: 140px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
+
 .fixed-input-box form {
     display: flex;
     align-items: center;
     width: 100%;
 }
+
+
 .fixed-input-box textarea {
     flex-grow: 1;
     margin-right: 10px;
@@ -171,6 +240,8 @@ body.login-register {
     height: 105px;
     background-color: white;
 }
+
+
 .fixed-input-box input[type="submit"] {
     font-size: 16px;
     padding: 5px 10px;
@@ -181,10 +252,14 @@ body.login-register {
     cursor: pointer;
     transition: background-color 0.3s, border-color 0.3s;
 }
+
+
 .fixed-input-box input[type="submit"]:hover {
     background-color: #ddd;
     border-color: #bbb;
 }
+
+
 .login-prompt {
     position: fixed;
     bottom: 0;
@@ -203,26 +278,42 @@ body.login-register {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 125px;
+    height: 140px;
 }
+
+
 .login-prompt a {
     text-decoration: underline;
     color: black;
     font-weight: bold;
 }
-.actions {
-    display: flex;
-    align-items: center;
+
+
+
+/* misc buttons */
+
+form {
     margin-top: 10px;
 }
-.actions label {
-    margin-right: 10px;
-    font-weight: bold;
+
+
+input[type="submit"] {
+    background-color: #f0f0f0;
+    color: #000;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
 }
-.delete-form {
-    margin-left: 15px;
+
+
+input[type="submit"]:hover {
+    background-color: #ddd;
+    border-color: #bbb;
 }
-.delete-form input[type="submit"] {
+
+
+input[type="submit"].delete-button {
     background-color: #f44336;
     color: white;
     border: none;
@@ -230,31 +321,25 @@ body.login-register {
     padding: 5px 10px;
     cursor: pointer;
 }
-.delete-form input[type="submit"]:hover {
+
+
+input[type="submit"].delete-button:hover {
     background-color: #d32f2f;
 }
-.edit-form {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-}
-.edit-form textarea {
-    margin-right: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-.edit-form input[type="submit"] {
-    padding: 10px;
+
+
+input[type="submit"].plain-button {
     background-color: #f0f0f0;
+    color: #000;
     border: 1px solid #ccc;
     border-radius: 5px;
-    color: black;
+    padding: 5px 10px;
+    margin-top: 15px;
     cursor: pointer;
-    margin-left: 5px;
-    transition: background-color 0.3s, border-color 0.3s;
 }
-.edit-form input[type="submit"]:hover {
+
+
+input[type="submit"].plain-button:hover {
     background-color: #ddd;
     border-color: #bbb;
 }
