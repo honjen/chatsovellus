@@ -2,6 +2,7 @@
 {% block title %}virhe{% endblock %}
 {% block content %}
     <div class="content">
-        virhe: {{ message }}
+        <p>virhe: {{ message }}</p>
+        <p><button onclick="history.back();">palaa takaisin</button></p>
     </div>
 {% endblock %}

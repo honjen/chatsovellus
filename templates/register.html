@@ -1,20 +1,31 @@
 {% extends "layout.html" %}
-{% block title %}luo käyttäjätunnus{% endblock %}
+{% block title %}rekisteröinti{% endblock %}
 {% block content %}
     <div class="content login-page">
-        <h1 class="page-title">luo käyttäjätunnus</h1>
-        <div class="register-container">
+        <h1>luo käyttäjätunnus</h1>
+        <div class="login-box">
             <form action="/register" method="post">
-                <input type="hidden" name="redirect_url" value="{{ redirect_url }}">
-                <label for="username">tunnus:</label>
-                <input type="text" name="username" name="username" required>
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                <label for="username">käyttäjätunnus:</label>
+                <input type="text" name="username" placeholder="käyttäjätunnus" required>
                 <label for="password1">salasana:</label>
-                <input type="password" name="password1" name="password1" required>
+                <input type="password" name="password1" placeholder="salasana" required>
                 <label for="password2">salasana uudestaan:</label>
-                <input type="password" name="password2" name="password2" required>
+                <input type="password" name="password2" placeholder="salasana" required>
                 <input type="submit" value="luo tunnus">
             </form>
         </div>
         <p>jos sinulla on tunnus, <a href="/login">kirjaudu sisään</a></p>
     </div>
+    <script>
+        const requiredFields = document.querySelectorAll("input[required], textarea[required]");
+        requiredFields.forEach(field => {
+            field.addEventListener("invalid", function(event) {
+                field.setCustomValidity("tekstikenttä ei saa olla tyhjä");
+            });
+            field.addEventListener("input", function(event) {
+                field.setCustomValidity("");
+            });
+        });
+    </script>
 {% endblock %}

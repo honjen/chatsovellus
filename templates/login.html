@@ -2,16 +2,28 @@
 {% block title %}kirjautuminen{% endblock %}
 {% block content %}
     <div class="content login-page">
-        <h1 class="page-title">kirjaudu sisään</h1>
-        <div class="login-container">
+        <h1>kirjaudu sisään</h1>
+        <div class="login-box">
             <form action="/login" method="post">
-                <label for="username">tunnus:</label>
-                <input type="text" name="username" name="username" required>
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                <label for="username">käyttäjätunnus:</label>
+                <input type="text" name="username" placeholder="käyttäjätunnus" required>
                 <label for="password">salasana:</label>
-                <input type="password" name="password" name="password" required>
+                <input type="password" name="password" placeholder="salasana" required>
                 <input type="submit" value="kirjaudu">
             </form>
         </div>
         <p>jos sinulla ei ole tunnusta, <a href="/register">luo käyttäjätunnus</a></p>
     </div>
+    <script>
+        const requiredFields = document.querySelectorAll("input[required], textarea[required]");
+        requiredFields.forEach(field => {
+            field.addEventListener("invalid", function(event) {
+                field.setCustomValidity("tekstikenttä ei saa olla tyhjä");
+            });
+            field.addEventListener("input", function(event) {
+                field.setCustomValidity("");
+            });
+        });
+    </script>
 {% endblock %}

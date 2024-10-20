@@ -3,22 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>
-        {% if current_page == 'index' %}
-            chatsovellus
-        {% elif category is defined %}
-            {{ category.name }} - chatsovellus
-        {% elif current_page == 'login' %}
-            kirjautuminen - chatsovellus
-        {% elif current_page == 'register' %}
-            luo käyttäjätunnus - chatsovellus
-        {% else %}
-            chatsovellus
-        {% endif %}
-    </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}{% endblock %}</title>
 </head>
-<body class="{% if current_page in ['login', 'register'] %}login-register{% endif %}">
+<body>
     <div class="navbar">
         <div class="left-links">
             <div class="title">chatsovellus</div>
@@ -27,17 +15,21 @@
                 {% if current_page != 'index' %}
                     <a href="/">etusivulle</a>
                 {% endif %}
+                {% if current_page == 'thread' %}
+                    <a href="/{{ category.name }}">edellinen</a>
+                {% endif %}
             </div>
         </div>
         <div class="right-links">
+            <a href="/search">haku</a>
             {% if session.user_id %}
                 <a href="/logout">kirjaudu ulos</a>
             {% elif current_page != 'login' %}
-                <a href="/login?redirect={{ request.path }}">kirjaudu sisään</a>
+                <a href="/login">kirjaudu sisään</a>
             {% endif %}
         </div>
     </div>
-    <hr>
     {% block content %}{% endblock %}
+    </div>
 </body>
 </html>

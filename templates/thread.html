@@ -2,77 +2,88 @@
 {% block title %}{{ thread.name }}{% endblock %}
 {% block content %}
     <div class="content">
-        <h2>{{ thread.name }}</h2>
+        <h2>{{ category.name }} - {{ thread.name }}</h2>
         <hr>
-        <p>viestejä: {{ count_messages }}</p>
-        <div class="messages-container">
+        <div class="first-message-box">
+            <p>
+                <strong>{{ thread.username }}</strong>
+                <span>lähetetty {{ thread.created_at }}</span> 
+            </p>
+            <p class="message-content">{{ thread.content }}</p>
+        </div>
+        <hr>
+        <p>vastauksia: {{ count_messages }}</p>
             {% for message in messages %}
                 <div class="message-box" id="message-box-{{ message.message_id }}">
                     <p>
                         <strong>{{ message.username }}</strong>
-                        <span>lähetetty</span>
-                        <small>{{ message.sent_at }}</small>
+                        <span>lähetetty {{ message.sent_at }}{% if message.edited_at %} | muokattu: {{ message.edited_at }}{% endif %}</span>
                     </p>
-                    <p class="message-content" id="message-content-{{ message.message_id }}">{{ message.content }}</p>
+                    <p class="message-content" id="{{ message.message_id }}">{{ message.content }}</p>
                     {% if session.user_id == message.user_id %}
-                        <div class="actions">
-                            <label for="edit-checkbox-{{ message.message_id }}">
-                                <input type="checkbox" class="edit-checkbox" id="edit-checkbox-{{ message.message_id }}">
-                                editoi
-                            </label>
-                            <form action="/{{ category.name }}/{{ thread.thread_id }}/delete_message" method="POST" class="delete-form">
-                                <input type="hidden" name="message_id" value="{{ message.message_id }}">
-                                <input type="submit" value="poista viesti" />
-                            </form>
-                        </div>
-                        <form id="edit-form-{{ message.message_id }}" action="/{{ category.name }}/{{ thread.thread_id }}/edit_message" method="POST" style="display: none;">
+                    <label>
+                        <input type="checkbox" class="toggle-edit-options">
+                        editoi
+                    </label>
+                    <div class="edit-options">
+                        <form id="edit-form-{{ message.message_id }}" action="/{{ category.name }}/{{ thread.thread_id }}/edit_message" method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                             <input type="hidden" name="thread_id" value="{{ thread.thread_id }}">
                             <input type="hidden" name="message_id" value="{{ message.message_id }}">
-                            <textarea name="content" rows="3" required>{{ message.content }}</textarea>
-                            <input type="submit" value="lähetä">
+                            <textarea name="content" rows="6" cols="60" placeholder="kirjoita viesti..." maxlength="20000" required>{{ message.content }}</textarea>
+                            <p><input type="submit" value="lähetä"></p>
                         </form>
+                        <form action="/{{ category.name }}/{{ thread.thread_id }}/delete_message" method="POST" class="delete-form">
+                            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                            <input type="hidden" name="message_id" value="{{ message.message_id }}">
+                            <input type="submit" value="poista viesti" class="delete-button"/>
+                        </form>
+                    </div>
                     {% endif %}
                 </div>
             {% endfor %}
-        </div>
+            <div class="message-buffer"></div>  
     </div>
     {% if session.user_id %}
         <div class="fixed-input-box">
             <form id="message-input" action="/{{ category.name }}/{{ thread.thread_id }}/send_message" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 <input type="hidden" name="category_id" value="{{ category.category_id }}">
                 <input type="hidden" name="category_name" value="{{ category.name }}">
                 <input type="hidden" name="thread_id" value="{{ thread.thread_id }}">
-                <textarea name="content" rows="3" required placeholder="kirjoita viesti..."></textarea>
+                <textarea name="content" rows="3" required maxlength="20000" placeholder="kirjoita viesti..."></textarea>
                 <input type="submit" value="lähetä">
             </form>
         </div>
     {% else %}
         <div class="login-prompt">
             <p>
-                <a href="/login?redirect={{ request.path }}" style="text-decoration: underline; color: black; font-weight: bold;">
+                <a href="/login">
                     kirjaudu sisään osallistuaksesi keskusteluun</a>
             </p>
         </div>
     {% endif %}
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const editCheckboxes = document.querySelectorAll('.edit-checkbox');
-        editCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function () {
-                const messageId = this.id.split('-')[2];
-                const messageContent = document.getElementById(`message-content-${messageId}`);
-                const editForm = document.getElementById(`edit-form-${messageId}`);
-                if (this.checked) {
-                    messageContent.style.display = 'none';
-                    editForm.style.display = 'block';
-                } else {
-                    messageContent.style.display = 'block';
-                    editForm.style.display = 'none';
-                }
+        function toggleEditOptions() {
+            var editOptions = document.querySelectorAll('.edit-options');
+            editOptions.forEach(function(options) {
+                var checkbox = options.previousElementSibling.querySelector('.toggle-edit-options');
+                options.style.display = checkbox.checked ? 'block' : 'none';
+            });
+        }
+        document.querySelectorAll('.toggle-edit-options').forEach(function(checkbox) {
+            checkbox.addEventListener('change', toggleEditOptions);
+        });
+        toggleEditOptions();
+
+        const requiredFields = document.querySelectorAll("input[required], textarea[required]");
+        requiredFields.forEach(field => {
+            field.addEventListener("invalid", function(event) {
+                field.setCustomValidity("Tekstikenttä ei saa olla tyhjä");
+            });
+            field.addEventListener("input", function(event) {
+                field.setCustomValidity("");
             });
         });
-    });
     </script>
 {% endblock %}
-
-    
